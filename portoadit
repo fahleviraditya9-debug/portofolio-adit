@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raditya Fahlevi | Creative Portfolio</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --accent: #38bdf8;
+            --dark-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-light: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--dark-bg); 
+            color: var(--text-light); 
+            overflow-x: hidden;
+        }
+
+        /* --- WELCOME SCREEN STYLING --- */
+        #welcome-screen {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.2s;
+            background: #000;
+        }
+
+        .welcome-video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+
+        .welcome-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: -1;
+        }
+
+        .welcome-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .welcome-avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 4px solid var(--accent);
+            padding: 0;
+            background: var(--card-bg);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
+            animation: float 3s ease-in-out infinite;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .welcome-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .welcome-quote {
+            color: white;
+            font-style: italic;
+            font-family: serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+            margin-bottom: 5px;
+        }
+
+        .welcome-icon {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            color: var(--accent);
+            transition: 0.4s;
+        }
+
+        .welcome-icon i {
+            font-size: 2.5rem;
+            animation: mouseBounce 2s infinite;
+            filter: drop-shadow(0 0 10px var(--primary));
+        }
+
+        .welcome-icon span {
+            font-weight: 600;
+            letter-spacing: 4px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        @keyframes mouseBounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-15px);}
+            60% {transform: translateY(-7px);}
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
+        body.locked { overflow: hidden; }
+
+        /* Music Player Styling */
+        .music-player {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: var(--card-bg);
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .music-btn {
+            width: 35px;
+            height: 35px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .music-btn:hover { transform: scale(1.1); background: var(--accent); }
+
+        /* --- BIODATA & EDUCATION ADDITIONAL STYLING --- */
+        .bio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .bio-card {
+            background: var(--glass);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: 0.4s;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .bio-card:hover {
+            background: rgba(56, 189, 248, 0.1);
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.15);
+        }
+
+        .bio-card i {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .bio-card span {
+            display: block;
+            font-size: 0.75rem;
+            opacity: 0.6;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .bio-card p { font-weight: 600; font-size: 1rem; }
+
+        .edu-timeline {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .edu-item {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            background: var(--glass);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid var(--accent);
+            transition: 0.3s;
+        }
+
+        .edu-item:hover { transform: scale(1.02); background: rgba(255,255,255,0.08); }
+
+        .edu-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        /* --- REST OF STYLING --- */
+        .cert-single-container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .cert-large-item {
+            background: var(--card-bg);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 24px;
+            padding: 15px;
+            transition: 0.4s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .cert-large-item img { width: 100%; height: auto; max-height: 70vh; object-fit: contain; border-radius: 15px; background: #000; }
+        .cert-info-box {
+            width: 100%; margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 15px; color: var(--accent); font-weight: 600;
+        }
+
+        nav { 
+            padding: 15px 8%; display: flex; justify-content: space-between; align-items: center; 
+            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px); position: fixed; width: 100%; z-index: 1000; transition: 0.4s;
+        }
+        nav.scrolled { padding: 10px 8%; background: var(--dark-bg); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .logo { font-weight: 700; font-size: 1.5rem; color: var(--accent); letter-spacing: 2px; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 25px; font-size: 0.9rem; transition: 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
+
+        header { 
+            height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; 
+            background: linear-gradient(rgba(15,23,42,0.75), rgba(15,23,42,0.95)), 
+                        url('https://i.imgur.com/4Mawlwg.jpeg') center/cover fixed; 
+        }
+
+        .hero-content h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); margin-bottom: 15px; }
+        .hero-content p { font-size: 1.2rem; color: var(--accent); margin-bottom: 30px; min-height: 1.5em; }
+
+        .skills { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+        .skill-badge { 
+            background: var(--glass); border: 1px solid rgba(255,255,255,0.1); padding: 12px 25px; border-radius: 50px; 
+            cursor: pointer; transition: all 0.3s ease; text-decoration: none; color: white; display: flex; align-items: center; gap: 10px;
+        }
+
+        section { padding: 100px 8%; }
+        h2 { font-size: 2.5rem; position: relative; display: inline-block; margin-bottom: 50px; }
+        h2::after { content: ''; width: 50%; height: 4px; background: var(--accent); position: absolute; bottom: -10px; left: 0; }
+
+        .about-container { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        
+        .stats-container { max-width: 900px; margin: 0 auto; }
+        .stat-item { margin-bottom: 25px; }
+        .stat-info { display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: 600; }
+        .progress-bar { background: rgba(255,255,255,0.1); height: 12px; border-radius: 10px; overflow: hidden; }
+        .progress-fill { 
+            background: linear-gradient(90deg, var(--primary), var(--accent)); height: 100%; border-radius: 10px;
+            width: 0; transition: 2s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+        }
+        .counter-grid { text-align: center; margin-top: 50px; }
+        .counter-number { font-size: 4rem; font-weight: 700; color: var(--accent); text-shadow: 0 0 20px rgba(56, 189, 248, 0.5); }
+
+        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .portfolio-item { 
+            background: var(--card-bg); border-radius: 20px; overflow: hidden; position: relative; 
+            height: 350px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        .portfolio-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .portfolio-item:hover img { transform: scale(1.1); filter: brightness(0.4); }
+
+        .portfolio-overlay {
+            position: absolute; inset: 0; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; opacity: 0; transition: 0.3s; padding: 20px;
+        }
+
+        .contact-container { max-width: 600px; margin: 0 auto; }
+        .contact-form { display: flex; flex-direction: column; gap: 20px; }
+        .input-group input, .input-group textarea {
+            width: 100%; padding: 15px 20px; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: white; font-family: 'Poppins', sans-serif; outline: none;
+        }
+        .submit-btn {
+            background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; padding: 15px;
+            border: none; border-radius: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+
+        .to-top {
+            position: fixed; bottom: 30px; right: 30px; background: var(--primary); 
+            width: 50px; height: 50px; border-radius: 50%; display: flex; 
+            align-items: center; justify-content: center; color: white; 
+            opacity: 0; transition: 0.3s; z-index: 999; text-decoration: none;
+        }
+        .to-top.active { opacity: 1; }
+
+        @media (max-width: 768px) {
+            .about-container { grid-template-columns: 1fr; text-align: center; }
+            h2::after { left: 25%; }
+            .music-player { bottom: 90px; left: 20px; }
+        }
+    </style>
+</head>
+<body class="locked">
+
+    <div id="welcome-screen">
+        <video class="welcome-video-bg" autoplay loop muted playsinline>
+            <source src="file:///storage/emulated/0/Download/snaptik_7583101754502352148_hd.mp4" type="video/mp4">
+        </video>
+        <div class="welcome-overlay"></div>
+
+        <div class="welcome-content">
+            <div class="welcome-avatar">
+                <img src="https://i.ibb.co.com/GvbCstrz/1000197867-removebg-preview.png" alt="Raditya Profil">
+            </div>
+            <div class="welcome-quote">" Fortis Fortuna Adiuvat "</div>
+            <div class="welcome-icon" onclick="startPortfolio()">
+                <i class="fas fa-mouse-pointer"></i>
+                <span>Klik untuk Masuk</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="music-player" data-aos="fade-right">
+        <button class="music-btn" id="musicControl">
+            <i class="fas fa-play" id="musicIcon"></i>
+        </button>
+        <div style="font-size: 0.75rem; font-weight: 600;">Bring It Back (Slowed)</div>
+        <audio id="myAudio" loop>
+            <source src="file:///storage/emulated/0/Download/bring%20it%20back%20(instrumental%20best%20part%20slowed%20edit%20audio).mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <nav id="navbar">
+        <div class="logo">RF.LEVI</div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#about">About</a>
+            <a href="#biodata">Bio</a>
+            <a href="#stats">Achievement</a>
+            <a href="#portfolio">Works</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <header>
+        <div class="hero-content" data-aos="zoom-out">
+            <h1>Raditya Fahlevi</h1>
+            <p id="typing-text"></p>
+            <div class="skills">
+                <a href="#portfolio" class="skill-badge"><i class="fas fa-camera-retro"></i> Photography</a>
+                <a href="#portfolio" class="skill-badge"><i class="fas fa-fill-drip"></i> Graphic Design</a>
+                <a href="#stats" class="skill-badge"><i class="fas fa-trophy"></i> Achievement</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="about">
+        <div class="about-container">
+            <div data-aos="fade-right">
+                <img src="https://i.imgur.com/4Mawlwg.jpeg" alt="Raditya" style="width: 100%; border-radius: 20px;">
+            </div>
+            <div data-aos="fade-left">
+                <h2>Tentang Saya</h2>
+                <p>Pelajar dari <strong>SMK Islamiyah Ciawi</strong> yang berdedikasi tinggi dalam dunia kreatif dan akademik. Sebagai perwakilan Duta Pelajar, saya berkomitmen untuk terus menginspirasi melalui karya visual.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="biodata" style="background: rgba(255,255,255,0.01);">
+        <h2 data-aos="fade-up">Personal Identity</h2>
+        
+        <div class="bio-grid">
+            <div class="bio-card" data-aos="zoom-in" data-aos-delay="100">
+                <i class="fas fa-user-circle"></i>
+                <span>Nama Lengkap</span>
+                <p>Raditya Fahlevi</p>
+            </div>
+            <div class="bio-card" data-aos="zoom-in" data-aos-delay="200">
+                <i class="fas fa-venus-mars"></i>
+                <span>Jenis Kelamin</span>
+                <p>Laki-Laki</p>
+            </div>
+            <div class="bio-card" data-aos="zoom-in" data-aos-delay="300">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>TTL</span>
+                <p>20 November 2007</p>
+            </div>
+            <div class="bio-card" data-aos="zoom-in" data-aos-delay="400">
+                <i class="fas fa-kaaba"></i>
+                <span>Agama</span>
+                <p>Islam</p>
+            </div>
+        </div>
+
+        <h3 style="text-align: center; margin: 40px 0; color: var(--accent); letter-spacing: 2px;" data-aos="fade-up">RIWAYAT PENDIDIKAN</h3>
+
+        <div class="edu-timeline">
+            <div class="edu-item" data-aos="fade-right">
+                <div class="edu-icon"><i class="fas fa-school"></i></div>
+                <div>
+                    <h4 style="color: var(--accent);">SDN Duren Jaya 11</h4>
+                    <p>Kota Bekasi Timur</p>
+                </div>
+            </div>
+
+            <div class="edu-item" data-aos="fade-right" data-aos-delay="100">
+                <div class="edu-icon"><i class="fas fa-graduation-cap"></i></div>
+                <div>
+                    <h4 style="color: var(--accent);">SMPN 18 Kota Bekasi</h4>
+                    <p>Kota Bekasi Timur</p>
+                </div>
+            </div>
+
+            <div class="edu-item" data-aos="fade-right" data-aos-delay="200">
+                <div class="edu-icon"><i class="fas fa-user-graduate"></i></div>
+                <div>
+                    <h4 style="color: var(--accent);">SMKS Islamiyah Ciawi</h4>
+                    <p>Tasikmalaya</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="stats" style="background: rgba(255,255,255,0.02);">
+        <h2 data-aos="fade-up">Statistik Pencapaian</h2>
+        <div class="stats-container">
+            <div class="stat-item" data-aos="fade-right">
+                <div class="stat-info"><span>TOEIC Berstandar Internasional</span><span>1 Sertifikat</span></div>
+                <div class="progress-bar"><div class="progress-fill" data-width="85%"></div></div>
+            </div>
+            <div class="stat-item" data-aos="fade-right" data-aos-delay="50">
+                <div class="stat-info"><span>Pramuka</span><span>19 Sertifikat</span></div>
+                <div class="progress-bar"><div class="progress-fill" data-width="95%"></div></div>
+            </div>
+            <div class="stat-item" data-aos="fade-right" data-aos-delay="100">
+                <div class="stat-info"><span>Duta Pelajar Berprestasi</span><span>2 Sertifikat + 1 Selendang</span></div>
+                <div class="progress-bar"><div class="progress-fill" data-width="45%"></div></div>
+            </div>
+            <div class="stat-item" data-aos="fade-right" data-aos-delay="200">
+                <div class="stat-info"><span>Paskibra</span><span>2 Sertifikat</span></div>
+                <div class="progress-bar"><div class="progress-fill" data-width="35%"></div></div>
+            </div>
+            <div class="stat-item" data-aos="fade-right" data-aos-delay="300">
+                <div class="stat-info"><span>Seminar & Organisasi</span><span>3 Sertifikat</span></div>
+                <div class="progress-bar"><div class="progress-fill" data-width="40%"></div></div>
+            </div>
+
+            <div class="counter-grid">
+                <div class="counter-box" data-aos="zoom-in">
+                    <span class="counter-number" data-target="29">0</span>
+                    <p style="letter-spacing: 3px; font-weight: 300;">TOTAL PENGHARGAAN</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="certificates" style="background: rgba(15, 23, 42, 0.6);">
+        <h2 data-aos="fade-up">Koleksi Sertifikat</h2>
+        <p data-aos="fade-up" style="margin-bottom: 30px; opacity: 0.7;">Sorotan pencapaian dan bukti dedikasi organisasi.</p>
+        <div class="cert-single-container" data-aos="zoom-in">
+            <div class="cert-large-item">
+                <img src="https://i.ibb.co.com/fd8HpfWL/IMG-20251121-222003.avif" alt="Koleksi Sertifikat Raditya">
+                <div class="cert-info-box">
+                    <i class="fas fa-award"></i>
+                    <span>Total 29 Sertifikat & Penghargaan Akademik</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio">
+        <h2 data-aos="fade-up">Portfolio Kami</h2>
+        <div class="portfolio-grid">
+            <div class="portfolio-item" data-aos="fade-up" data-aos-delay="100">
+                <img src="https://i.imgur.com/CX4vZjp.jpeg">
+                <div class="portfolio-overlay"><h3>Duta Pelajar</h3><p>Achievement Highlight</p></div>
+            </div>
+            <div class="portfolio-item" data-aos="fade-up" data-aos-delay="200">
+                <img src="https://i.imgur.com/KsQTJHj.jpeg">
+                <div class="portfolio-overlay"><h3>Color Grading</h3><p>Visual Aesthetics</p></div>
+            </div>
+            <div class="portfolio-item" data-aos="fade-up" data-aos-delay="300">
+                <img src="https://i.imgur.com/4ZfMdYx.jpeg">
+                <div class="portfolio-overlay"><h3>Graphic Design</h3><p>CorelDraw Project</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" style="background: var(--card-bg);">
+        <div class="contact-container" data-aos="zoom-in">
+            <h2 style="display: block; text-align: center;">Hubungi Saya</h2>
+            <form action="https://formspree.io/f/radityafahlevi2379@gmail.com" method="POST" class="contact-form">
+                <div class="input-group">
+                    <input type="text" name="name" placeholder="Nama Lengkap Pengirim" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" name="_replyto" placeholder="Email Pengirim" required>
+                </div>
+                <div class="input-group">
+                    <textarea name="message" rows="5" placeholder="Tuliskan pesan atau tawaran kerjasama kamu di sini..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <span>Kirim Pesan</span>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+            <div style="margin-top: 50px; text-align: center;">
+                <a href="https://www.instagram.com/adittt_.2007" target="_blank" style="color: white; font-size: 2rem; margin: 0 15px;"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@mas._rflevi" target="_blank" style="color: white; font-size: 2rem; margin: 0 15px;"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <a href="#" class="to-top" id="toTop"><i class="fas fa-arrow-up"></i></a>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+
+        const audio = document.getElementById("myAudio");
+        const musicControl = document.getElementById("musicControl");
+        const musicIcon = document.getElementById("musicIcon");
+
+        function startPortfolio() {
+            const welcome = document.getElementById('welcome-screen');
+            welcome.classList.add('fade-out');
+            document.body.classList.remove('locked');
+            audio.play().catch(e => console.log("Audio play blocked by browser"));
+            musicIcon.className = "fas fa-pause";
+        }
+
+        musicControl.addEventListener("click", () => {
+            if (audio.paused) {
+                audio.play();
+                musicIcon.className = "fas fa-pause";
+            } else {
+                audio.pause();
+                musicIcon.className = "fas fa-play";
+            }
+        });
+
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+                if (!audio.paused) {
+                    audio.pause();
+                    musicIcon.className = "fas fa-play";
+                    audio.wasPlayingBeforeHidden = true; 
+                }
+            } else {
+                const welcome = document.getElementById('welcome-screen');
+                if (welcome.classList.contains('fade-out') && audio.wasPlayingBeforeHidden) {
+                    audio.play().catch(e => {});
+                    musicIcon.className = "fas fa-pause";
+                    audio.wasPlayingBeforeHidden = false;
+                }
+            }
+        });
+
+        new Typed('#typing-text', {
+            strings: ['Photographer', 'Graphic Designer', 'Duta Pelajar Jawa Barat'],
+            typeSpeed: 50,
+            backSpeed: 30,
+            loop: true
+        });
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            const toTop = document.getElementById('toTop');
+            if (window.scrollY > 100) {
+                nav.classList.add('scrolled');
+                toTop.classList.add('active');
+            } else {
+                nav.classList.remove('scrolled');
+                toTop.classList.remove('active');
+            }
+        });
+
+        const statsSection = document.querySelector('#stats');
+        const progressFills = document.querySelectorAll('.progress-fill');
+        const counters = document.querySelectorAll('.counter-number');
+        let animated = false;
+
+        const animateStats = () => {
+            progressFills.forEach(fill => {
+                fill.style.width = fill.getAttribute('data-width');
+            });
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const updateCount = () => {
+                    const count = +counter.innerText;
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + (target/50));
+                        setTimeout(updateCount, 40);
+                    } else { counter.innerText = target; }
+                };
+                updateCount();
+            });
+        };
+
+        window.addEventListener('scroll', () => {
+            if (statsSection.getBoundingClientRect().top < window.innerHeight / 1.3 && !animated) {
+                animateStats();
+                animated = true;
+            }
+        });
+    </script>
+</body>
+</html>
